@@ -2221,7 +2221,6 @@ numpy.compat.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/pyth
 numpy.compat._inspect|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/compat/_inspect.py
 numpy.compat.py3k|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/compat/py3k.py
 numpy.compat.setup|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/compat/setup.py
-numpy.core
 numpy.core.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/__init__.py
 numpy.core._internal|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/_internal.py
 numpy.core._methods|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/_methods.py
@@ -2341,7 +2340,6 @@ numpy.fft.fftpack|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.
 numpy.fft.helper|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/fft/helper.py
 numpy.fft.info|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/fft/info.py
 numpy.fft.setup|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/fft/setup.py
-numpy.lib
 numpy.lib.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/lib/__init__.py
 numpy.lib._datasource|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/lib/_datasource.py
 numpy.lib._iotools|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/lib/_iotools.py
@@ -2381,7 +2379,6 @@ numpy.ma.testutils|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3
 numpy.ma.timer_comparison|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/ma/timer_comparison.py
 numpy.ma.version|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/ma/version.py
 numpy.matlib|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/matlib.py
-numpy.matrixlib
 numpy.matrixlib.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/matrixlib/__init__.py
 numpy.matrixlib.defmatrix|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/matrixlib/defmatrix.py
 numpy.matrixlib.setup|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/matrixlib/setup.py
