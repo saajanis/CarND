@@ -1,0 +1,142 @@
+import matplotlib.pyplot as plt
+# Load pickled data
+import pickle
+import numpy as np
+
+# TODO: Fill this in based on where you saved the training and testing data
+
+training_file = "./traffic-signs-data/train.p"
+validation_file = "./traffic-signs-data/valid.p"
+testing_file = "./traffic-signs-data/test.p"
+
+with open(training_file, mode='rb') as f:
+    train = pickle.load(f)
+with open(validation_file, mode='rb') as f:
+    valid = pickle.load(f)
+with open(testing_file, mode='rb') as f:
+    test = pickle.load(f)
+    
+X_train, X_train_coords, X_train_sizes, y_train = train['features'], train['coords'], train['sizes'], train['labels']
+X_valid, X_valid_coords,X_valid_sizes, y_valid = valid['features'], valid['coords'], valid['sizes'], valid['labels']
+X_test, X_test_coords, X_test_sizes, y_test = test['features'], test['coords'], test['sizes'], test['labels']
+
+#################
+
+### Replace each question mark with the appropriate value. 
+### Use python, pandas or numpy methods rather than hard coding the results
+
+# TODO: Number of training examples
+n_train = X_train.shape[0]
+
+# TODO: Number of validation examples
+n_validation = X_valid.shape[0]
+
+# TODO: Number of testing examples.
+n_test = X_test.shape[0]
+
+# TODO: What's the shape of an traffic sign image?
+image_shape = X_train.shape[1:]
+
+# TODO: How many unique classes/labels there are in the dataset.
+n_classes = len(np.unique(y_train))
+
+print("Number of training examples =", n_train)
+print("Number of testing examples =", n_test)
+print("Image data shape =", image_shape)
+print("Number of classes =", n_classes)
+
+##################
+
+
+### Data exploration visualization code goes here.
+### Feel free to use as many code cells as needed.
+# Visualizations will be shown in the notebook.
+#TODO(saajan): uncomment line below and plot and do more visualization
+#%matplotlib inline
+
+# plt.hist(y_train, alpha=0.5, label='training_labels', bins=43)
+# plt.hist(y_valid, alpha=0.5, label='validation_labels', bins=43)
+# plt.hist(y_test, alpha=0.5, label='test_labels', bins=43)
+# plt.legend(loc='upper right')
+# plt.show()
+
+###################
+import random
+
+def show_sample_images(Xs, count):
+    fig = plt.figure()
+    for i in range(count):
+        index = random.randint(0, len(Xs)-1)
+        image = Xs[index].squeeze()
+        ax1 = fig.add_subplot(1,count,i+1)
+        ax1.imshow(image)
+        #ax1.imshow(image, cmap="gray")
+        
+        #plt.imshow(image, cmap="gray")
+        #plt.imshow(image)
+           
+show_sample_images(X_train, 10)
+
+### Preprocess the data here. It is required to normalize the data. Other preprocessing steps could include 
+### converting to grayscale, etc.
+### Feel free to use as many code cells as needed.    
+
+# Create cropped data
+def extract_bounds_and_rescale(image, coord, size):
+    transformed_x = 32
+    transformed_y = 32
+    original_x = size[0]
+    original_y = size[1]
+     
+    x_multiplier = float(transformed_x)/float(original_x)
+    y_multiplier = float(transformed_y)/float(original_y)
+     
+    transformed_coord = (coord[0]* x_multiplier, coord[1] * y_multiplier, coord[2] * x_multiplier, coord[3] * y_multiplier)
+    transformed_coord = [int(np.rint(val)) for val in transformed_coord]
+     
+    ret_image = image.copy()
+    shape = image.shape
+    
+    ret_image[0:transformed_coord[1]] = 0
+    ret_image = image[0:transformed_coord[1],transformed_coord[0]:transformed_coord[2]]
+    return ret_image
+ 
+# extract_bounds_and_rescale Xs
+X_train = [extract_bounds_and_rescale(image, coord, size) for (image, coord, size) in zip(X_train, X_train_coords, X_train_sizes)]
+X_valid = [extract_bounds_and_rescale(image, coord, size) for (image, coord, size) in zip(X_valid, X_valid_coords,X_valid_sizes)]
+X_test = [extract_bounds_and_rescale(image, coord, size) for (image, coord, size) in zip(X_test, X_test_coords, X_test_sizes)]
+ 
+#cropped_data = {'X_train': X_train, 'y_train': y_train, 'X_valid': X_valid, 'y_valid': y_valid, 'X_test': X_test, 'y_test': y_test}
+cropped_data = {'X_train': X_test}
+# with open('cropped_data.pickle', 'wb') as cropped_data_handle:
+#     pickle.dump(cropped_data, cropped_data_handle, protocol=pickle.HIGHEST_PROTOCOL)
+#  
+# with open('cropped_data.pickle', 'rb') as cropped_data_handle:
+#     cropped_data = pickle.load(cropped_data_handle)
+     
+show_sample_images(cropped_data['X_train'], 10)
+
+
+
+# 
+# # normalize Xs
+# def normalize(image):
+#     normalizer_func = np.vectorize(lambda val: (val-128)/128)
+#     return normalizer_func(image)
+# 
+# X_train = [normalize(X_train_image) for X_train_image in X_train]
+# X_valid = [normalize(X_valid_image) for X_valid_image in X_valid]
+# X_test = [normalize(X_test_image) for X_test_image in X_test]
+# 
+# 
+# 
+# # convert_to_grayscale Xs
+# def convert_to_grayscale(image):
+#     lala2 = 0
+# X_train = [convert_to_grayscale(X_train_image) for X_train_image in X_train]
+# X_valid = [convert_to_grayscale(X_valid_image) for X_valid_image in X_valid]
+# X_test = [convert_to_grayscale(X_test_image) for X_testX_train_image in X_test]
+# 
+# #TODO(saajan): Use the bounding box co-ordinates in the dataset and resize to 32*32
+# 
+lala = 0
