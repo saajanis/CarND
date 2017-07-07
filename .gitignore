@@ -1,5 +1,6 @@
 ./.metadata/*
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/data/*.pickle
+./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/data/traffic-signs-data/*
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/checkpoint/*
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/lenet.data-00000-of-00001
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/lenet.index
