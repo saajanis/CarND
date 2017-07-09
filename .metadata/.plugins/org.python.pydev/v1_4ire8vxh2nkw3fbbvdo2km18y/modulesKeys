@@ -1543,6 +1543,7 @@ poplib|/Users/Saajan/miniconda3/lib/python3.6/poplib.py
 posix
 posixpath|/Users/Saajan/miniconda3/lib/python3.6/posixpath.py
 pprint|/Users/Saajan/miniconda3/lib/python3.6/pprint.py
+prettytable|/Users/Saajan/miniconda3/lib/python3.6/site-packages/prettytable.py
 profile|/Users/Saajan/miniconda3/lib/python3.6/profile.py
 pstats|/Users/Saajan/miniconda3/lib/python3.6/pstats.py
 pty|/Users/Saajan/miniconda3/lib/python3.6/pty.py

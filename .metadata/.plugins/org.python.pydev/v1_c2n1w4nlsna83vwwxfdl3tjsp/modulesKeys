@@ -2221,7 +2221,6 @@ numpy.compat.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/pyth
 numpy.compat._inspect|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/compat/_inspect.py
 numpy.compat.py3k|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/compat/py3k.py
 numpy.compat.setup|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/compat/setup.py
-numpy.core
 numpy.core.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/__init__.py
 numpy.core._internal|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/_internal.py
 numpy.core._methods|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/_methods.py
@@ -2236,14 +2235,12 @@ numpy.core.getlimits|/Library/Frameworks/Python.framework/Versions/3.6/lib/pytho
 numpy.core.info|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/info.py
 numpy.core.machar|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/machar.py
 numpy.core.memmap|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/memmap.py
-numpy.core.multiarray
 numpy.core.numeric|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/numeric.py
 numpy.core.numerictypes|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/numerictypes.py
 numpy.core.records|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/records.py
 numpy.core.setup|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/setup.py
 numpy.core.setup_common|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/setup_common.py
 numpy.core.shape_base|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/core/shape_base.py
-numpy.core.umath
 numpy.ctypeslib|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/ctypeslib.py
 numpy.distutils.__config__|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/distutils/__config__.py
 numpy.distutils.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/distutils/__init__.py
@@ -2343,7 +2340,6 @@ numpy.fft.fftpack|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.
 numpy.fft.helper|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/fft/helper.py
 numpy.fft.info|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/fft/info.py
 numpy.fft.setup|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/fft/setup.py
-numpy.lib
 numpy.lib.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/lib/__init__.py
 numpy.lib._datasource|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/lib/_datasource.py
 numpy.lib._iotools|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/lib/_iotools.py
@@ -2383,7 +2379,6 @@ numpy.ma.testutils|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3
 numpy.ma.timer_comparison|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/ma/timer_comparison.py
 numpy.ma.version|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/ma/version.py
 numpy.matlib|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/matlib.py
-numpy.matrixlib
 numpy.matrixlib.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/matrixlib/__init__.py
 numpy.matrixlib.defmatrix|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/matrixlib/defmatrix.py
 numpy.matrixlib.setup|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/numpy/matrixlib/setup.py
@@ -3151,6 +3146,7 @@ poplib|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/poplib.py
 posix
 posixpath|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/posixpath.py
 pprint|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/pprint.py
+prettytable|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/prettytable.py
 profile|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/profile.py
 prompt_toolkit.__init__|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/prompt_toolkit/__init__.py
 prompt_toolkit.application|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/prompt_toolkit/application.py
@@ -5974,6 +5970,7 @@ tests.test_issues|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.
 tests.test_misc|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/tests/test_misc.py
 tests.test_tools|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/tests/test_tools.py
 tests.tests|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/tests/tests.py
+texttable|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/texttable.py
 textwrap|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/textwrap.py
 this|/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/this.py
 thread
