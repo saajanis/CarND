@@ -2,6 +2,27 @@ import matplotlib.pyplot as plt
 # Load pickled data
 import pickle
 import numpy as np
+from collections import defaultdict
+from collections import OrderedDict
+from operator import itemgetter
+import collections
+
+def build_feature_label_ranked_dict(X, Y):
+    assert(len(X) == len(Y))
+    label_feature_dict = {}
+    for x,y in zip(X, Y):
+        if y not in label_feature_dict:
+            label_feature_dict[y] = x
+    
+    label_count_dict = defaultdict(int)
+    for x,y in zip(X, Y):
+        label_count_dict[y] += 1
+    
+    ranked_count_to_label_feature_dict = collections.OrderedDict()
+    for label, count in sorted(label_count_dict.items(), key=lambda x:x[1]):
+        ranked_count_to_label_feature_dict[count] = (label, label_feature_dict[label])
+    
+    return ranked_count_to_label_feature_dict
 
 # TODO: Fill this in based on where you saved the training and testing data
 
@@ -21,6 +42,9 @@ with open(testing_file, mode='rb') as f:
 X_train, X_train_coords, X_train_sizes, y_train = np.asarray(train['features'], dtype=np.float32), train['coords'], train['sizes'], train['labels']
 X_valid, X_valid_coords,X_valid_sizes, y_valid = np.asarray(valid['features'], dtype=np.float32), valid['coords'], valid['sizes'], valid['labels']
 X_test, X_test_coords, X_test_sizes, y_test = np.asarray(test['features'], dtype=np.float32), test['coords'], test['sizes'], test['labels']
+
+
+build_feature_label_ranked_dict(X_train, y_train)
 
 #################
 
