@@ -1,4 +1,3 @@
-
 [//]: # (Image References)
 
 [image1]: ./examples/visualization.jpg "Visualization"
@@ -133,7 +132,7 @@ I am training the model over 500 EPOCHS and a BATCH_SIZE of 128.
 The weights and biases are sampled from a random normal distribution witha  mean=0, stddev=0.1 
  
 #### 3. Results.
-(Output in the "Model generation and evaluation section of the ipynb")
+(Output in the "Model generation and evaluation" section of the ipynb/HTML)
 
 **Training, validation and test:**
 Here are the plots of training and validation accuracies while using the different transformations of the dataset. Each one of the datasets produced models that could achieve at least 93% accuracy over 500 epochs. The curves, as seen in the plots below (and raw values that I saw) had mostly flattened out with only minor variance in accuracy over each other Epoch - so I wasn't too hopeful of the performance to incrase with more training iterations.
@@ -148,7 +147,6 @@ All the results are very comparable and satisfactory and too statistically insig
 The higher accuracy on the training dataset as compared to the validation and testing dataset points to overfitting, but since we have gotten the accuracy values we wanted, I'll move on.
 
 
-## TODO: Insert plots here
 **Here are the training/validation accuracy plots for all the datasets considered:**
 <br/>
 **Original images:**
