@@ -1,0 +1,2 @@
+model_checkpoint_path: "dataoriginal_normalized_data_1"
+all_model_checkpoint_paths: "dataoriginal_normalized_data_1"
