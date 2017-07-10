@@ -1,4 +1,6 @@
-./.metadata/*
+.metadata/*
+
+#Project2
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/data/*.pickle
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/data/traffic-signs-data/*
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/checkpoint/*
@@ -6,3 +8,7 @@
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/lenet.index
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/lenet.meta
 ./CarND-Project2/CarND-Traffic-Sign-Classifier-Project/.ipynb_checkpoints/*
+
+
+#PreProject3
+
