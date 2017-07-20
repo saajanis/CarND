@@ -1,0 +1,3 @@
+model_checkpoint_path: "cipher10_1"
+all_model_checkpoint_paths: "cipher10_0"
+all_model_checkpoint_paths: "cipher10_1"
