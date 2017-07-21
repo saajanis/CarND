@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 import pickle
+from keras.layers.convolutional import Cropping2D
 
 #################
 class MacOSFile(object):
@@ -111,13 +112,14 @@ y_train = data['steering_angles_front'] + data['steering_angles_left'] + data['s
 # Model
 # TODO: Try models other than LeNet
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda
+from keras.layers import Flatten, Dense, Lambda, Cropping2D
 from keras.layers import Convolution2D
 from keras.layers.pooling import MaxPooling2D
 
 model = Sequential()
 # Normalized data with zero mean
 model.add(Lambda(lambda x:x/255.0 - 0.5, input_shape=(160, 320, 3)))
+model.add(Cropping2D(cropping=((70,25), (0,0))))
 model.add(Convolution2D(6,5,5,activation='relu'))
 model.add(MaxPooling2D())
 model.add(Convolution2D(6,5,5,activation='relu'))
