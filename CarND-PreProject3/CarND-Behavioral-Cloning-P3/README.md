@@ -18,11 +18,13 @@
 [image15]: ./writeup__supporting_data/sample_center_image.jpg
 [image16]: ./writeup__supporting_data/sample_left_image.jpg
 [image17]: ./writeup__supporting_data/sample_right_image.jpg
+[image18]: ./writeup__supporting_data/cropped_centre_image.png
+[image19]: ./writeup__supporting_data/sample_center_image_flipped.jpg
 
 
 
-[image18]: ./writeup__supporting_data/cropped_data_plot.png
-[image19]: ./writeup__supporting_data/cropped_grayscale_data_plot.png
+
+
 [image20]: ./writeup__supporting_data/cropped_normalized_data_plot.png
 [image21]: ./writeup__supporting_data/cropped_grayscaled_normalized_data_plot.png
 [image22]: ./writeup__supporting_data/sample_test_images.png
@@ -96,26 +98,29 @@ Here are the different kinds of datasets (from track 1) that I had for training 
   * Driving forward and then backward, normally:  
  
  ![track1_forward_backward][image11]
- Car drove nicely in the simulator but went off-track relatively less frequently.
+ 
+  Car drove nicely in the simulator but went off-track relatively less frequently.
  
  <br/><br/>
   * Driving forward , backward normally and then forward really slowly:  
  
  ![track1_forward_backward_ForwardSlow][image12]
- Car drove nicely in the simulator and went off-track very infrequently drove off-track consistently at some patches (about 3) of the track.
+ 
+  Car drove nicely in the simulator and went off-track very infrequently drove off-track consistently at some patches (about 3) of the track.
  
  <br/><br/>
   * Driving forward , backward normally and then forward really slowly. Then, I tried to add some data for recovering from when the car goes off-track:  
  
  ![track1_forward_backward_ForwardSlow_forwardCorrectional][image13]
  
- There wasn't any overfitting here as in the previous models, but the car drove really erratically. The increase in validation error shows the same fact. I think it is because of the way I collected data. I would drive the car to the side of the road, start recording and comeback to the center very aggressively - maybe I should've come back to the center slowly, like in a real situation where I am correcting the car going off-course. I considered recollecting this data with the improved strategy, but the next model just worked - so I'll ignore this model/data.
+  There wasn't any overfitting here as in the previous models, but the car drove really erratically. The increase in validation error shows the same fact. I think it is because of the way I collected data. I would drive the car to the side of the road, start recording and comeback to the center very aggressively - maybe I should've come back to the center slowly, like in a real situation where I am correcting the car going off-course. I considered recollecting this data with the improved strategy, but the next model just worked - so I'll ignore this model/data.
  
  <br/><br/>
   * Driving forward , backward normally and then forward really slowly. Then, I tested out this data in the simulator and collected more data for the patches where the car was going off track and trained some more on that data:  
  
  ![track1_forward_backward_ForwardSlow_patches][image14]
- I collected more data specifically for the patches where the car drove off road and trained it into the last to previous model and voila, it gave me a model that drove the car nicely through the whole track! The output corresponds to driving with this model.
+ 
+  I collected more data specifically for the patches where the car drove off road and trained it into the last to previous model and voila, it gave me a model that drove the car nicely through the whole track! The output corresponds to driving with this model.
 
 <br/><br/>
 
@@ -133,11 +138,15 @@ For each of the datasets collected above, I applied the following transformation
  ![sample_right_image][image17]
  
  While the steering angle for the image at the centre stays as recorded - for the left and right images, the target steering angles are added and subtracted respectively with a *correction of 0.25* so we can treat them as if they were the centre image.
-
+<br/>
 * I then applied flipping to each image to generate a laterally inverted image (to simulate driving in the opposite direction) which will help the model generalize.
+ ![sample_center_image_flipped][image19]
 
-* Also, built into the model is a cropping mechanism that crops out the top 70 pixels (the sky, shrubs etc.) and bottom 25 pixels (hood of the car) from each image in the training and testing dataset. They'll confuse the model rather than help and provide no useful information while making gthe decision if every image has those pixels.
+<br/>
+* Also, built into the model is a cropping mechanism that crops out the 70 pixels from the top (the sky, shrubs etc.) and 25 pixels from the bottom (hood of the car) from each image in the training and testing dataset. They'll confuse the model rather than help and provide no useful information while making gthe decision if every image has those pixels.
+  ![cropped_centre_image][image18]
 
+<br/>
 * The model also has a layer to normalize the data to zero mean and small values.
  
 
