@@ -144,15 +144,9 @@ For each of the datasets collected above, I applied the following transformation
  While the steering angle for the image at the centre stays as recorded - for the left and right images, the target steering angles are added and subtracted respectively with a *correction of 0.25* so we can treat them as if they were the centre image.
 <br/>
 * I then applied flipping to each image to generate a laterally inverted image (to simulate driving in the opposite direction) which will help the model generalize.
-<br/>
-![sample_center_image_flipped][image18]
-<br/>
 
 <br/>
 * Also, built into the model is a cropping mechanism that crops out the 70 pixels from the top (the sky, shrubs etc.) and 25 pixels from the bottom (hood of the car) from each image in the training and testing dataset. They'll confuse the model rather than help and provide no useful information while making gthe decision if every image has those pixels.
-<br/>
-![cropped_centre_image][image19]
-<br/>
 
 <br/>
 * The model also has a layer to normalize the data to zero mean and small values.
