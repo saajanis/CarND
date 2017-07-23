@@ -130,21 +130,29 @@ Here are the different kinds of datasets (from track 1) that I had for training 
 For each of the datasets collected above, I applied the following transformations on the data before feeding it to the network:
 
 * A sample image for the car in the centre of the road looked like this:
+  <br/>
  ![sample_center_image][image15]
+ <br/>
  
  And the left and right samples (which simulate an image taken from cameras mounted on the left and right of the car's dashboard) look like this:
+ <br/>
  ![sample_left_image][image16]
  <br/>
  ![sample_right_image][image17]
+ <br/>
  
  While the steering angle for the image at the centre stays as recorded - for the left and right images, the target steering angles are added and subtracted respectively with a *correction of 0.25* so we can treat them as if they were the centre image.
 <br/>
 * I then applied flipping to each image to generate a laterally inverted image (to simulate driving in the opposite direction) which will help the model generalize.
+ <br/>
  ![sample_center_image_flipped][image19]
+ <br/>
 
 <br/>
 * Also, built into the model is a cropping mechanism that crops out the 70 pixels from the top (the sky, shrubs etc.) and 25 pixels from the bottom (hood of the car) from each image in the training and testing dataset. They'll confuse the model rather than help and provide no useful information while making gthe decision if every image has those pixels.
+  <br/>
   ![cropped_centre_image][image18]
+  <br/>
 
 <br/>
 * The model also has a layer to normalize the data to zero mean and small values.
