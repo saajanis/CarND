@@ -1,5 +1,3 @@
-## Writeup Template
-
 [//]: # (Image References)
 
 [image1]: ./writeup_data/calibration_images.png "Calibration"
@@ -121,4 +119,4 @@ Here's a [link to my video result](https://youtu.be/CVde9Pet_UA)
 
 I will discuss the issues mentioned in step 7 here:
 * For the first one, I could experiment with initalizing the window cetroids from the top or even middle of the frame (or a combination of top, down and middle and select one which gives the highest confidence) to get over the problem of missing lane lines in some part of the frame sometimes.
-* For the second point, I could experiment with making the window height bigger or increasing the number of pixels required to recenter the windows or find a way to reuse the last fit when computed fit is erroneous like that. Another solution would be to make the algorithm smart enough to detect that once a polynomial is fit for a lane line with high confidence, to not look more than half way through from the starting point to the other lane line to prevent merging and increase the chances of the actual lane to be detected later on by a different window. 
+* For the second point, I could experiment with making the window height bigger or increasing the number of pixels required to recenter the windows or find a way to reuse the last fit when computed fit is erroneous like that. Another solution would be to make the algorithm smart enough to detect that once a polynomial is fit for a lane line with high confidence, to not look more than half way through from the starting point to the other lane line to prevent merging and increase the chances of the actual lane to be detected later on by a different window.
