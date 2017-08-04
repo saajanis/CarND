@@ -82,6 +82,8 @@ Cell 5 contains the code for identifying the lane lines. I used the sliding wind
 
 * I chose a window 50 px for convolutions, a margin of 175px * 2, for detecting non-zero pixels and a minimum of 50 non-zero px to allow readjusting the window centroid.
 * Also, I chose a value of 65000 px as the min number of non-zero pixels required within the margin from the previously fit polynomials in order to reuse it for the current frame. Of course, while generating images in the next step, the polynomials were computed separately.
+* To reject bad fits, I computed the distance between points on the lane lines and rejected fits for which, anywhere on the detected lanes were the points either less than 670 px or more than 1000 px (both impossible values for the lane lines we have).
+* Also, to smoothen the change in the lane line curves and to make the pipeline less sensitive to the outliers, the computed lane lines are an average over the last 8 lane line that were detected (and not rejected thereafter).
 
 The fit is shown in the images in step 7.
 
@@ -109,7 +111,7 @@ Here are the images :
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](https://youtu.be/CVde9Pet_UA)
+Here's a [link to my video result](https://youtu.be/9SDCele13mQ)
 
 ---
 

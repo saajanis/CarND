@@ -263,9 +263,24 @@ def locate_lane_lines(image, original_image = None):
     nonzero_left = left_img_mask.nonzero()
     nonzero_right = right_img_mask.nonzero()
     
+    ploty = np.linspace(0, image.shape[0]-1, image.shape[0] )
+    ### Should reject?
+    left_fit_current = np.polyfit(nonzero_left[0], nonzero_left[1], 2)
+    right_fit_current = np.polyfit(nonzero_right[0], nonzero_right[1], 2)
+    
+    left_x_points = left_fit_current[0]*ploty**2 + left_fit_current[1]*ploty + left_fit_current[2]
+    right_x_points = right_fit_current[0]*ploty**2 + right_fit_current[1]*ploty + right_fit_current[2]
+    
+    x_diff = np.abs(left_x_points - right_x_points)
+    x_std_dev = np.std(x_diff)
+    #print(x_std_dev)
+    should_reject = False
+    
     #Add to list
-    LEFT_FIT_POINTS = [nonzero_left] + LEFT_FIT_POINTS[:NUM_FRAMES_CONSIDERED-1]
-    RIGHT_FIT_POINTS = [nonzero_right] + RIGHT_FIT_POINTS[:NUM_FRAMES_CONSIDERED-1]
+    if (not should_reject) or len(LEFT_FIT_POINTS) == 0:
+        LEFT_FIT_POINTS = [nonzero_left] + LEFT_FIT_POINTS[:NUM_FRAMES_CONSIDERED-1] 
+    if (not should_reject) or len(RIGHT_FIT_POINTS) == 0:
+        RIGHT_FIT_POINTS = [nonzero_right] + RIGHT_FIT_POINTS[:NUM_FRAMES_CONSIDERED-1]
     
     # Fit a second order polynomial to each
     left_fit_x = np.concatenate([points[0] for points in LEFT_FIT_POINTS])
