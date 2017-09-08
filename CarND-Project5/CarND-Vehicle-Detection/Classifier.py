@@ -1,7 +1,51 @@
 
 # coding: utf-8
 
-# In[70]:
+# In[1]:
+
+
+class MacOSFile(object):
+    def __init__(self, f):
+        self.f = f
+
+    def __getattr__(self, item):
+        return getattr(self.f, item)
+
+    def read(self, n):
+        # print("reading total_bytes=%s" % n, flush=True)
+        if n >= (1 << 31):
+            buffer = bytearray(n)
+            idx = 0
+            while idx < n:
+                batch_size = min(n - idx, 1 << 31 - 1)
+                # print("reading bytes [%s,%s)..." % (idx, idx + batch_size), end="", flush=True)
+                buffer[idx:idx + batch_size] = self.f.read(batch_size)
+                # print("done.", flush=True)
+                idx += batch_size
+            return buffer
+        return self.f.read(n)
+
+    def write(self, buffer):
+        n = len(buffer)
+        print("writing total_bytes=%s..." % n, flush=True)
+        idx = 0
+        while idx < n:
+            batch_size = min(n - idx, 1 << 31 - 1)
+            print("writing bytes [%s, %s)... " % (idx, idx + batch_size), end="", flush=True)
+            self.f.write(buffer[idx:idx + batch_size])
+            print("done.", flush=True)
+            idx += batch_size
+
+def pickle_dump(obj, file_path):
+    with open(file_path, "wb") as f:
+        return pickle.dump(obj, MacOSFile(f), protocol=pickle.HIGHEST_PROTOCOL)
+
+def pickle_load(file_path):
+    with open(file_path, "rb") as f:
+        return pickle.load(MacOSFile(f))
+
+
+# In[2]:
 
 
 import math
@@ -25,7 +69,12 @@ def show_images(images, make_random=False, fig_title='Default title', CMAP=None)
     #plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
     
 def get_average_bbox(bbox, prev_n_bb_list_list):
-    global min_prev_bbox_matches_ratio
+    global min_prev_bbox_matches_count
+    global num_prev_bboxes_for_avg
+    
+    # There's nothing to compare against
+    if len(prev_n_bb_list_list) == 0:
+        return bbox
     
     bboxes_to_consider = [bbox]
     
@@ -34,12 +83,13 @@ def get_average_bbox(bbox, prev_n_bb_list_list):
         if matched_bbox != None and matched_bbox != True:
             bboxes_to_consider.append(matched_bbox)
         
-    if float(len(bboxes_to_consider)) - 1 < min_prev_bbox_matches_ratio * len(prev_n_bb_list_list):
+    if float(len(bboxes_to_consider)) - 1.0 < min_prev_bbox_matches_count: #min_prev_bbox_matches_ratio * len(prev_n_bb_list_list):
         return None
         
+    bboxes_to_consider_avg = bboxes_to_consider[:num_prev_bboxes_for_avg]
     # Take avg
-    mean_bbox =        ((( int(np.mean([x1 for ((x1, y1), (x2, y2)) in bboxes_to_consider])) ), int(np.mean([y1 for ((x1, y1), (x2, y2)) in bboxes_to_consider])) ),
-         (( int(np.mean([x2 for ((x1, y1), (x2, y2)) in bboxes_to_consider]) )), int(np.mean([y2 for ((x1, y1), (x2, y2)) in bboxes_to_consider])) ))
+    mean_bbox = ((( int(np.mean([x1 for ((x1, y1), (x2, y2)) in bboxes_to_consider_avg])) ), int(np.mean([y1 for ((x1, y1), (x2, y2)) in bboxes_to_consider_avg])) ),
+         (( int(np.mean([x2 for ((x1, y1), (x2, y2)) in bboxes_to_consider_avg]) )), int(np.mean([y2 for ((x1, y1), (x2, y2)) in bboxes_to_consider_avg])) ))
     
     return mean_bbox
         
@@ -89,8 +139,15 @@ def bb_intersection_over_union(boxA, boxB_list):
 
 def draw_labeled_bboxes(img, labels, prev_n_bb_list_list):
     global min_bbox_area
+    global min_prev_bbox_matches_count
+    
+    ##
+    global none_count
+    global total_count
+    
     new_bb_list = []
-    #num_times_average_respected = 0
+    all_bb_list = []
+    num_times_average_respected = 0
     # Iterate through all detected cars
     for car_number in range(1, labels[1]+1):
         # Find pixels with each car_number label value
@@ -106,24 +163,35 @@ def draw_labeled_bboxes(img, labels, prev_n_bb_list_list):
         if boxArea > min_bbox_area:
             
             average_new_bbox = get_average_bbox(bbox, prev_n_bb_list_list)
-            if not average_new_bbox:
-                #and num_times_average_respected >= math.floor(np.mean([len(lst) for lst in prev_n_bb_list_list])):
-                new_bb_list.append(bbox) 
-                # Draw the box on the image
-                cv2.rectangle(img, bbox[0], bbox[1], (0,0,255), 6)
-            
             if average_new_bbox: 
                 new_bb_list.append(average_new_bbox) 
-                #num_times_average_respected = num_times_average_respected + 1
+                all_bb_list.append(average_new_bbox) 
+                num_times_average_respected = num_times_average_respected + 1
                 # Draw the box on the image
-                cv2.rectangle(img, bbox[0], bbox[1], (0,0,255), 6)
+                cv2.rectangle(img, average_new_bbox[0], average_new_bbox[1], (0,0,255), 6)
+                
+#             elif num_times_average_respected >= math.ceil(np.mean([len(lst) for lst in prev_n_bb_list_list[:min_prev_bbox_matches_count]])): 
+#                 new_bb_list.append(bbox) 
+#                 all_bb_list.append(bbox)
+#                 # Draw the box on the image
+#                 cv2.rectangle(img, bbox[0], bbox[1], (0,0,255), 6)
+            else:
+                all_bb_list.append(bbox)
+                none_count = none_count+1
+            
+            total_count = total_count+1
+                
+#             elif num_times_average_respected >= math.floor(np.mean([len(lst) for lst in prev_n_bb_list_list])):
+#                 new_bb_list.append(bbox) 
+#                 # Draw the box on the image
+#                 cv2.rectangle(img, bbox[0], bbox[1], (0,0,255), 6)
                 
             
     # Return the image
-    return (img, new_bb_list)
+    return (img, new_bb_list, all_bb_list)
 
 
-# In[71]:
+# In[3]:
 
 
 # lesson_functions
@@ -325,26 +393,49 @@ t2 = time.time()
 print(round(t2-t, 5), 'Seconds to predict', n_predict,'labels with SVC')
 
 
-# In[72]:
+# In[6]:
 
 
 from scipy.ndimage.measurements import label
 
 
 prev_n_bb_list_list = []
-max_num_prev_bbox_list = 30 #was 15(wobbly)
-min_prev_bbox_matches_ratio = 1.0 # was 0.75 (wobbly)
-min_num_overlapping_windows = 1 # feel confidence in 3
-min_bbox_area = 100
-min_iou_ratio = 0.3 # was 0.6
+# TODO(saajan): change next 2 params and reconsider using math.ceil
+num_prev_bboxes = 15
+num_prev_bboxes_for_avg = 4
+min_prev_bbox_matches_count = 10
+
+
+#min_prev_bbox_matches_ratio = 0.0 # was 0.75 (wobbly) # Will need more working - bad at detecting new vehicles
+# Using mean instead -->
+min_overlap_percentile = 99.99 # not useful - removing - the max is always 3
+max_num_overlapping_windows = 10#was 3 # not useful - removing - the max is always 3
+min_num_overlapping_windows = 3 # feel confidence in 3
+min_bbox_area = 2500# was 50
+min_iou_ratio = 0.2 # was 0.5
+
+cached_heat_imgs = []
+cached_draw_imgs = []
+#cached_heat_imgs = pickle_load('./cached_heat_imgs')
+#cached_heat_imgs_iter = np.nditer([cached_heat_imgs])
+heat_imgs_running_count = 0
+
+none_count = 0
+total_count = 0
 
 # Define a single function that can extract features using hog sub-sampling and make predictions
-def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, window_pix_per_cell, cell_per_block, spatial_size, hist_bins, cspace='RGB',):
+def find_cars(img, ystart, ystop, xstart, scale, svc, X_scaler, orient, window_pix_per_cell, cell_per_block, spatial_size, hist_bins, cspace='RGB',):
     # TODO: Remove logic for draw_images to save compute
     
     global prev_n_bb_list_list 
     global min_num_overlapping_windows
-    global max_num_prev_bbox_list
+    global min_overlap_percentile
+    global max_num_overlapping_windows
+    global num_prev_bboxes
+    
+    global cached_heat_imgs
+    global heat_imgs_running_count
+    global cached_draw_imgs
     
     draw_img = np.copy(img)
     heat_img = np.zeros_like(img[:,:,0]).astype(np.float)
@@ -360,26 +451,26 @@ def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, window_pix_per_c
         elif cspace == 'YUV':
             feature_image = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
     else: feature_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)   
-
+ 
     feature_image = feature_image.astype(np.float32)/255
-
-    img_tosearch = feature_image[ystart:ystop,:,:]    
+ 
+    img_tosearch = feature_image[ystart:ystop,xstart:,:]    
     ctrans_tosearch = convert_color(img_tosearch, conv='RGB2YCrCb')
-
+ 
     if scale != 1:
         imshape = ctrans_tosearch.shape
         ctrans_tosearch = cv2.resize(ctrans_tosearch, (np.int(imshape[1]/scale), np.int(imshape[0]/scale)))
-
+ 
     ch1 = ctrans_tosearch[:,:,0]
     ch2 = ctrans_tosearch[:,:,1]
     ch3 = ctrans_tosearch[:,:,2]
-
+ 
     for (window, pix_per_cell) in window_pix_per_cell:
         # Define blocks and steps as above
         nxblocks = (ch1.shape[1] // pix_per_cell) - cell_per_block + 1
         nyblocks = (ch1.shape[0] // pix_per_cell) - cell_per_block + 1 
         nfeat_per_block = orient*cell_per_block**2
-
+ 
         # 64 was the original sampling rate, with 8 cells and 8 pix per cell
         #window = 64
         nblocks_per_window = (window // pix_per_cell) - cell_per_block + 1
@@ -387,12 +478,12 @@ def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, window_pix_per_c
         cells_per_step = 2  # Instead of overlap, define how many cells to step
         nxsteps = (nxblocks - nblocks_per_window) // cells_per_step
         nysteps = (nyblocks - nblocks_per_window) // cells_per_step
-
+ 
         # Compute individual channel HOG features for the entire image
         hog1 = get_hog_features(ch1, orient, pix_per_cell, cell_per_block, feature_vec=False)
         hog2 = get_hog_features(ch2, orient, pix_per_cell, cell_per_block, feature_vec=False)
         hog3 = get_hog_features(ch3, orient, pix_per_cell, cell_per_block, feature_vec=False)
-
+ 
         for xb in range(nxsteps):
             for yb in range(nysteps):
                 ypos = yb*cells_per_step
@@ -403,53 +494,64 @@ def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, window_pix_per_c
                 hog_feat2 = hog2[ypos:ypos+nblocks_per_window, xpos:xpos+nblocks_per_window].ravel() 
                 hog_feat3 = hog3[ypos:ypos+nblocks_per_window, xpos:xpos+nblocks_per_window].ravel() 
                 hog_features = np.hstack((hog_feat1, hog_feat2, hog_feat3))
-
+ 
                 xleft = xpos*pix_per_cell
                 ytop = ypos*pix_per_cell
-
+ 
                 # Extract the image patch
                 subimg = cv2.resize(img_tosearch[ytop:ytop+window, xleft:xleft+window], (64,64))
-
+ 
                 # Get color features
                 spatial_features = bin_spatial(subimg, size=spatial_size)
                 hist_features = color_hist(subimg, nbins=hist_bins)
-
+ 
                 # Scale features and make a prediction
                 all_features = np.hstack((spatial_features, hist_features, hog_features))
                 features = np.array([all_features]).astype(np.float64)
                 # Apply the scaler to X
                 scaled_features = X_scaler.transform(features)
                 test_prediction = svc.predict(scaled_features)
-
+ 
                 if test_prediction == 1:
                     xbox_left = np.int(xleft*scale)
                     ytop_draw = np.int(ytop*scale)
                     win_draw = np.int(window*scale)
-                    cv2.rectangle(draw_img,(xbox_left, ytop_draw+ystart),(xbox_left+win_draw,ytop_draw+win_draw+ystart),(0,0,255),6) 
-                    heat_img[ytop_draw+ystart:ytop_draw+win_draw+ystart, xbox_left:xbox_left+win_draw] += 1
+                    cv2.rectangle(draw_img,(xbox_left+xstart, ytop_draw+ystart),(xbox_left+win_draw+xstart,ytop_draw+win_draw+ystart),(0,0,255),6) 
+                    heat_img[ytop_draw+ystart:ytop_draw+win_draw+ystart, xbox_left+xstart:xbox_left+win_draw+xstart] += 1
 
+
+    
+    ##
+    #heat_img = cached_heat_imgs[heat_imgs_running_count]
+    cached_heat_imgs.append(heat_img)
+    heat_imgs_running_count = heat_imgs_running_count+1
+    cached_draw_imgs.append(draw_img)
+    
 
     # Reject weak overlaps
-    heat_img[heat_img <= min_num_overlapping_windows] = 0  
+    #heat_img_percentile = np.percentile(heat_img, min_overlap_percentile)
+    # heat_img[heat_img > max_num_overlapping_windows] = 10 
+    heat_img[heat_img < min_num_overlapping_windows] = 0 
+    #heat_img[heat_img <= heat_img_percentile] = 0  
     # Visualize the heatmap when displaying    
     heatmap = np.clip(heat_img, 0, 255) 
     # Find final boxes from heatmap using label function
     labels = label(heatmap)
-    (heat_img, new_bb_list) = draw_labeled_bboxes(img, labels, prev_n_bb_list_list)
-
-
+    (heat_img, new_bb_list, all_bb_list) = draw_labeled_bboxes(img, labels, prev_n_bb_list_list)    
+    
     # TODO: Refine this logic
-    prev_n_bb_list_list = [] if len(new_bb_list) == 0 else [new_bb_list] + prev_n_bb_list_list[:max_num_prev_bbox_list]
+    prev_n_bb_list_list = [] if len(all_bb_list) == 0 else [all_bb_list] + prev_n_bb_list_list[:num_prev_bboxes]
     #prev_n_bb_list_list = prev_n_bb_list_list[:len(prev_n_bb_list_list)-1] if len(new_bb_list) < 2 else [new_bb_list] + prev_n_bb_list_list[:7]
-
+    
 
     return (heat_img, draw_img)
                     
     
 ystart = 400
 ystop = 656
+xstart = 600
 scale = 1.5
-window_pix_per_cell = [(48, 6), (64, 8), (80, 10), (96, 12), (112, 14)] #(32, 4), 
+window_pix_per_cell = [(48, 6), (80, 10)] #(32, 4),  (64, 8), , (96, 12), (112, 14)
                     
     
 # Read in test images
@@ -460,13 +562,13 @@ for image in test_images_generator:
      if True:
         test_images.append(cv2.resize(cv2.imread(image), (1280, 720)))
     
-result = [find_cars(test_image, ystart, ystop, scale, svc, X_scaler, orient, window_pix_per_cell, cell_per_block, spatial_size, histbin, cspace=color_space)                          for test_image in test_images]
+result = [find_cars(test_image, ystart, ystop, xstart, scale, svc, X_scaler, orient, window_pix_per_cell, cell_per_block, spatial_size, histbin, cspace=color_space)                          for test_image in test_images]
 
 show_images([tup[0] for tup in result], CMAP='hot')
 show_images([tup[1] for tup in result])
 
 
-# In[76]:
+# In[ ]:
 
 
 # Import everything needed to edit/save/watch video clips
@@ -477,8 +579,8 @@ def process_image(image):
     # NOTE: The output you return should be a color image (3 channel) for processing video below
     # TODO: put your pipeline here,
     # you should return the final output (image where lines are drawn on lanes)
-    (heat_img, draw_img) = find_cars(image, ystart, ystop, scale, svc, X_scaler, orient, window_pix_per_cell, cell_per_block, spatial_size, histbin, cspace=color_space)
-    return heat_img
+    (heat_img, draw_img) = find_cars(image, ystart, ystop, xstart, scale, svc, X_scaler, orient, window_pix_per_cell, cell_per_block, spatial_size, histbin, cspace=color_space)
+    return draw_img
 
 output_path = 'output_video.mp4'
 ## To speed up the testing process you may want to try your pipeline on a shorter subclip of the video
@@ -486,14 +588,71 @@ output_path = 'output_video.mp4'
 ## Where start_second and end_second are integer values representing the start and end of the subclip
 ## You may also uncomment the following line for a subclip of the first 5 seconds
 ##clip1 = VideoFileClip("test_videos/solidWhiteRight.mp4").subclip(0,5)
-project_video = VideoFileClip("project_video.mp4")#.subclip(5,8)
+#project_video = VideoFileClip("project_video.mp4")\
+#.subclip(25,32)
+#.subclip(40,52)
 #.subclip(27,31)
+#.subclip(5,8)
 #.subclip(20,27)
 
 
+# project_clip = project_video.fl_image(process_image) #NOTE: this function expects color images!!
+# %time project_clip.write_videofile(output_path, audio=False)
 
-project_clip = project_video.fl_image(process_image) #NOTE: this function expects color images!!
+# print(none_count)
+# print(total_count)
+
+# window_pix_per_cell = [(32, 4)]
+# output_path = 'output_video324.mp4'
+# project_video = VideoFileClip("project_video.mp4")
+# project_clip = project_video.fl_image(process_image)
+# %time project_clip.write_videofile(output_path, audio=False)
+
+# window_pix_per_cell = [(48, 6)] #(32, 4),  (64, 8), , (96, 12), (112, 14)
+# output_path = 'output_video486.mp4'
+# project_video = VideoFileClip("project_video.mp4")
+# project_clip = project_video.fl_image(process_image)
+# %time project_clip.write_videofile(output_path, audio=False)
+
+# window_pix_per_cell = [(64, 8)] #(32, 4),  (64, 8), , (96, 12), (112, 14)
+# output_path = 'output_video648.mp4'
+# project_video = VideoFileClip("project_video.mp4")
+# project_clip = project_video.fl_image(process_image)
+# %time project_clip.write_videofile(output_path, audio=False)
+
+# window_pix_per_cell = [(80, 10)] #(32, 4),  (64, 8), , (96, 12), (112, 14)
+# output_path = 'output_video8010.mp4'
+# project_video = VideoFileClip("project_video.mp4")
+# project_clip = project_video.fl_image(process_image)
+# %time project_clip.write_videofile(output_path, audio=False)
+
+# window_pix_per_cell = [(96, 12)] #(32, 4),  (64, 8), , (96, 12), (112, 14)
+# output_path = 'output_video9612.mp4'
+# project_video = VideoFileClip("project_video.mp4")
+# project_clip = project_video.fl_image(process_image)
+# %time project_clip.write_videofile(output_path, audio=False)
+    
+# window_pix_per_cell = [(112, 14)] #(32, 4),  (64, 8), , (96, 12), (112, 14)
+# output_path = 'output_video11214.mp4'
+# project_video = VideoFileClip("project_video.mp4")
+# project_clip = project_video.fl_image(process_image)
+# %time project_clip.write_videofile(output_path, audio=False)
+
+#cached_heat_imgs_iter.reset()
+cached_heat_imgs = []
+cached_draw_imgs = []
+heat_imgs_running_count = 0
+window_pix_per_cell = [(32, 4), (48, 6), (64, 8)] #(32, 4),  (64, 8), , (96, 12), (112, 14)
+output_path = 'output_video324486.mp4'
+project_video = VideoFileClip("project_video.mp4")
+project_clip = project_video.fl_image(process_image)
 project_clip.write_videofile(output_path, audio=False)
+
+# Save model
+pickle_dump(cached_heat_imgs, './cached_heat_imgs')
+pickle_dump(cached_heat_imgs, './cached_draw_imgs')
+
+
 
 # #### 
 # 

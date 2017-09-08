@@ -23,3 +23,5 @@ CarND-PreProject3/CarND-Behavioral-Cloning-P3/run1/
 #CarND-Project5
 CarND-Project5/CarND-Vehicle-Detection/data/
 CarND-Project5/CarND-Vehicle-Detection/features
+CarND-Project5/CarND-Vehicle-Detection/output_video*
+CarND-Project5/CarND-Vehicle-Detection/cached_heat_imgs
