@@ -110,6 +110,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     return;
   }
 
+    if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+        return;
+    }
   /*****************************************************************************
    *  Prediction
    ****************************************************************************/
