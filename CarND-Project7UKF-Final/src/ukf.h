@@ -65,6 +65,10 @@ public:
     // previous timestamp
     long long previous_timestamp_;
 
+    Eigen::MatrixXd H_laser_;
+
+    Eigen::MatrixXd R_laser_;
+
 
 
     ///////////// Not set yet
