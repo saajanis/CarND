@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/Saajan/Documents/workspace/CarND/CarND-Project8Localization/helpers.h
+math.h
+-
+iostream
+-
+vector
+-
+fstream
+-
+sstream
+-
+iomanip
+-
+
+/Users/Saajan/Documents/workspace/CarND/CarND-Project8Localization/main.cpp
+iostream
+-
+algorithm
+-
+vector
+-
+helpers.h
+/Users/Saajan/Documents/workspace/CarND/CarND-Project8Localization/helpers.h
+
