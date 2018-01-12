@@ -1,4 +1,4 @@
-# Install script for directory: /Users/Saajan/Documents/workspace/CarND/CarND-Project8Kidnapped-Vehicle-Project
+# Install script for directory: /Users/Saajan/Documents/workspace/CarND/CarND-Project8Kidnapped-Vehicle
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,5 +35,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/Saajan/Documents/workspace/CarND/CarND-Project8Kidnapped-Vehicle-Project/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/Saajan/Documents/workspace/CarND/CarND-Project8Kidnapped-Vehicle/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

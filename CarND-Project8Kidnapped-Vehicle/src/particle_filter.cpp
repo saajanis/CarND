@@ -338,6 +338,7 @@ string ParticleFilter::getSenseY(Particle best)
 
  double ParticleFilter::getMultivariateProbability(const Eigen::VectorXd &x, const Eigen::VectorXd &meanVec, const Eigen::MatrixXd &covMat)
  {
+     // Got it from: https://stackoverflow.com/questions/41538095/evaluate-multivariate-normal-gaussian-density-in-c
      // avoid magic numbers in your code. Compilers will be able to compute this at compile time:
      const double logSqrt2Pi = 0.5*std::log(2*M_PI);
      typedef Eigen::LLT<Eigen::MatrixXd> Chol;
