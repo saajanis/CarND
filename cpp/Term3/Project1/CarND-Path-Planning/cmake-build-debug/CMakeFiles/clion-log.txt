@@ -1,4 +1,4 @@
-/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/saajan/Documents/CarND/cpp/Term3/Project1/CarND-Path-Planning-Project
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/saajan/Documents/CarND/cpp/Term3/Project1/CarND-Path-Planning
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/saajan/Documents/CarND/cpp/Term3/Project1/CarND-Path-Planning-Project/cmake-build-debug
+-- Build files have been written to: /Users/saajan/Documents/CarND/cpp/Term3/Project1/CarND-Path-Planning/cmake-build-debug
