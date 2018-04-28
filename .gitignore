@@ -29,3 +29,5 @@ CarND-Project5/CarND-Vehicle-Detection/all_features_3
 
 #CarND-T3P2
 python/Term3/Project2/CarND-Semantic-Segmentation/data/
+AWS/
+python/Term3/Project2/CarND-Object-Detection-Lab/frozen_*
