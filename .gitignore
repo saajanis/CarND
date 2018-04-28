@@ -26,3 +26,6 @@ CarND-Project5/CarND-Vehicle-Detection/features
 CarND-Project5/CarND-Vehicle-Detection/output_video*
 CarND-Project5/CarND-Vehicle-Detection/cached_heat_imgs
 CarND-Project5/CarND-Vehicle-Detection/all_features_3
+
+#CarND-T3P2
+python/Term3/Project2/CarND-Semantic-Segmentation/data/

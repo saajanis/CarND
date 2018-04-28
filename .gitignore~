@@ -11,5 +11,18 @@
 
 
 #PreProject3
-./CarND-PreProject3/CarND-Behavioral-Cloning-P3/data.p
-./CarND-PreProject3/CarND-Behavioral-Cloning-P3/data/*
+CarND-PreProject3/CarND-Alexnet-Feature-Extraction/data/
+CarND-PreProject3/CarND-Transfer-Learning-Lab/data/
+CarND-PreProject3/CarND-Behavioral-Cloning-P3/data.p
+CarND-PreProject3/CarND-Behavioral-Cloning-P3/data/
+CarND-PreProject3/CarND-Behavioral-Cloning-P3/.ipynb_checkpoints/
+CarND-PreProject3/CarND-Behavioral-Cloning-P3/__MACOSX/
+CarND-PreProject3/CarND-Behavioral-Cloning-P3/data.zip
+CarND-PreProject3/CarND-Behavioral-Cloning-P3/run1/
+
+#CarND-Project5
+CarND-Project5/CarND-Vehicle-Detection/data/
+CarND-Project5/CarND-Vehicle-Detection/features
+CarND-Project5/CarND-Vehicle-Detection/output_video*
+CarND-Project5/CarND-Vehicle-Detection/cached_heat_imgs
+CarND-Project5/CarND-Vehicle-Detection/all_features_3
