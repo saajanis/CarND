@@ -74,3 +74,5 @@ The loss reduces roughly as:
 The images from test run are present in the runs directory.
 
 The output from the latest run of the program is in output.txt
+
+The code is contained in main.py
