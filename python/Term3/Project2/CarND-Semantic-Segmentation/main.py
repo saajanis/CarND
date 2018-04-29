@@ -11,6 +11,7 @@ import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
 
+
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion('1.0'), 'Please use TensorFlow version 1.0 or newer.  You are using {}'.format(tf.__version__)
 print('TensorFlow Version: {}'.format(tf.__version__))
@@ -102,9 +103,11 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     :return: Tuple of (logits, train_op, cross_entropy_loss)
     """
     # TODO: Implement function
-    logits = tf.reshape(nn_last_layer, (-1, num_classes))
+    logits = tf.reshape(nn_last_layer, (-1, num_classes), name='logits')
     label = tf.reshape(correct_label, (-1, num_classes))
-    cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=correct_label))
+    
+    reg_losses = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
+    cross_entropy_loss =         tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=correct_label)) +         tf.reduce_sum(reg_losses)
 
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
     train_op = optimizer.minimize(loss=cross_entropy_loss, global_step=tf.train.get_global_step())
@@ -149,43 +152,43 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
             print("Loss: = {:.3f}".format(loss))
         print()
 
-tests.test_train_nn(train_nn)
+#tests.test_train_nn(train_nn)
 
 
 # In[ ]:
 
 
-# Import everything needed to edit/save/watch video clips# Import 
-from moviepy.editor import VideoFileClip
-from IPython.display import HTML
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageColor
-import scipy
-import numpy as np
+# # Import everything needed to edit/save/watch video clips# Import 
+# from moviepy.editor import VideoFileClip
+# from IPython.display import HTML
+# from PIL import Image
+# from PIL import ImageDraw
+# from PIL import ImageColor
+# import scipy
+# import numpy as np
 
-clip = VideoFileClip('driving.mp4')
+# clip = VideoFileClip('driving.mp4')
 
-# TODO: Complete this function.
-# The input is an NumPy array.
-# The output should also be a NumPy array.
-def pipeline(img):
-    image_shape = (160, 576)
+# # TODO: Complete this function.
+# # The input is an NumPy array.
+# # The output should also be a NumPy array.
+# def pipeline(img):
+#     image_shape = (160, 576)
 
-    draw_img = Image.fromarray(img)
-    image = scipy.misc.imresize(draw_img, image_shape)
+#     draw_img = Image.fromarray(img)
+#     image = scipy.misc.imresize(draw_img, image_shape)
 
-    im_softmax = sess.run(
-            [tf.nn.softmax(logits)],
-            {keep_prob: 1.0, image_pl: [image]})
-    im_softmax = im_softmax[0][:, 1].reshape(image_shape[0], image_shape[1])
-    segmentation = (im_softmax > 0.5).reshape(image_shape[0], image_shape[1], 1)
-    mask = np.dot(segmentation, np.array([[0, 255, 0, 127]]))
-    mask = scipy.misc.toimage(mask, mode="RGBA")
-    street_im = scipy.misc.toimage(image)
-    street_im.paste(mask, box=None, mask=mask)
+#     im_softmax = sess.run(
+#             [tf.nn.softmax(logits)],
+#             feed_dict={keep_prob: 1.0, image_input: [image]})
+#     im_softmax = im_softmax[0][:, 1].reshape(image_shape[0], image_shape[1])
+#     segmentation = (im_softmax > 0.5).reshape(image_shape[0], image_shape[1], 1)
+#     mask = np.dot(segmentation, np.array([[0, 255, 0, 127]]))
+#     mask = scipy.misc.toimage(mask, mode="RGBA")
+#     street_im = scipy.misc.toimage(image)
+#     street_im.paste(mask, box=None, mask=mask)
 
-    return np.array(street_im)
+#     return np.array(street_im)
 
 
 # In[ ]:
@@ -196,9 +199,9 @@ image_shape = (160, 576)
 data_dir = './data'
 runs_dir = './runs'
 tests.test_for_kitti_dataset(data_dir)
-epochs = 1
+epochs = 50
 batch_size = 5
-use_saved_model = True
+use_saved_model = False
     
 def run():
     # Download pretrained vgg model
@@ -221,6 +224,7 @@ def run():
             # TODO: Build NN using load_vgg, layers, and optimize function
             input_image, keep_prob, vgg_layer3_out_tensor, vgg_layer4_out_tensor, vgg_layer7_out_tensor =                 load_vgg(sess, vgg_path)
             layer_output = layers(vgg_layer3_out_tensor, vgg_layer4_out_tensor, vgg_layer7_out_tensor, num_classes)
+            #print(tf.trainable_variables())
 
             correct_label = tf.placeholder("float", [None, None, None, num_classes])
             learning_rate = tf.placeholder("float", None)
@@ -232,7 +236,7 @@ def run():
                      correct_label, keep_prob, learning_rate)
 
             # TODO: Save inference data using helper.save_inference_samples
-            #helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
+            helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
             
             # Save model
             saver = tf.train.Saver()
@@ -248,12 +252,15 @@ def run():
             print('Restored from : {}'.format(save_path))
             
             graph = tf.get_default_graph()
-            tf.
+            image_input = graph.get_operation_by_name("image_input")
+            keep_prob = graph.get_operation_by_name("keep_prob")
+            logits = graph.get_operation_by_name("logits")
             
-            new_clip = clip.fl_image(pipeline)
-
+            helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, image_input)
+            
+            #new_clip = clip.fl_image(pipeline)
             # write to file
-            new_clip.write_videofile('result.mp4')
+            #new_clip.write_videofile('result.mp4')
             
             
 
