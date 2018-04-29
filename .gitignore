@@ -31,3 +31,7 @@ CarND-Project5/CarND-Vehicle-Detection/all_features_3
 python/Term3/Project2/CarND-Semantic-Segmentation/data/
 AWS/
 python/Term3/Project2/CarND-Object-Detection-Lab/frozen_*
+python/Term3/Project2/CarND-Semantic-Segmentation/runs/checkpoint
+python/Term3/Project2/CarND-Semantic-Segmentation/runs/model.ckpt.data-00000-of-00001
+python/Term3/Project2/CarND-Semantic-Segmentation/runs/model.ckpt.index
+python/Term3/Project2/CarND-Semantic-Segmentation/runs/model.ckpt.meta
