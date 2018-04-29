@@ -28,7 +28,8 @@ CarND-Project5/CarND-Vehicle-Detection/cached_heat_imgs
 CarND-Project5/CarND-Vehicle-Detection/all_features_3
 
 #CarND-T3P2
-python/Term3/Project2/CarND-Semantic-Segmentation/data/
+python/Term3/Project2/CarND-Semantic-Segmentation/data/data_road
+python/Term3/Project2/CarND-Semantic-Segmentation/data/vgg
 AWS/
 python/Term3/Project2/CarND-Object-Detection-Lab/frozen_*
 python/Term3/Project2/CarND-Semantic-Segmentation/runs/checkpoint
